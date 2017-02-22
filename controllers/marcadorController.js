@@ -20,16 +20,19 @@ function getMarcador(req, res) {
             res.status(500).send({
                 message: "Error al devolver el marcador"
             });
+        }else{
+            if(!marcador){
+                res.status(404).send({
+                        message: "No hay marcador"
+                });
+            }else{
+                res.status(200).send({
+                    marcador
+                });   
+            }
+
+
         }
-        if(!marcador){
-            res.status(404).send({
-                    message: "No hay marcador"
-            });
-        }
-        
-        res.status(200).send({
-            marcador
-        });
     });
 }
 
@@ -39,11 +42,14 @@ function getMarcadores(req, res) {
 
         if(err){
             res.status(500).send({message:"Error al devolver marcadores"});
+        }else{
+            if(!marcadores){
+                res.status(404).send({message:"No hay marcadores"});
+            }else{ 
+                 res.status(200).send({marcadores});
+            } 
         }
-        if(!marcadores){
-            res.status(404).send({message:"No hay marcadores"});
-        }
-        res.status(200).send({marcadores});
+
     });
 }
 
@@ -59,13 +65,15 @@ function saveMarcador(req, res) {
    // console.dir(marcador);
     marcador.save((err, marcadorStored)=>{
       if(err){
-              console.log('Error al guardar');
+          console.log('Error al guardar');
           req.status(500).send({message:'Error al guardar el marcador'});
+      }else{
+            console.log('Sin errores');
+            res.status(200).send({
+             marcador: marcadorStored
+             }); 
       }
-       console.log('Sin errores');
-       res.status(200).send({
-        marcador: marcadorStored
-        });
+
     });
 
 }
@@ -80,11 +88,14 @@ function updateMarcador(req, res) {
             res.status(500).send({
                 message: "Error al actualizar el marcador."
             });
+        }else{
+            
+            res.status(200).send({
+                marcador: marcadorUpdated
+            }); 
+            
         }
         
-        res.status(200).send({
-            marcador: marcadorUpdated
-        });
     });
     
 }
@@ -97,24 +108,28 @@ function deleteMarcador(req, res) {
             res.status(500).send({
                 message: "Error al devolver el marcador"
             });
+        } else {
+             
+            if(!marcador){
+                res.status(404).send({
+                        message: "No hay marcador"
+                });
+            }else{
+                marcador.remove(err=>{
+                    if(err){
+                        res.status(500).send({
+                            message:"El marcador fue eliminado"
+                        }); 
+                    }else{
+                        res.status(200).send({
+                            message:"El marcador fue eliminado"
+                        });
+                    }
+                });
+            } 
+            
         }
-        if(!marcador){
-            res.status(404).send({
-                    message: "No hay marcador"
-            });
-        }else{
-            marcador.remove(err=>{
-                if(err){
-                    res.status(500).send({
-                        message:"El marcador fue eliminado"
-                    }); 
-                }else{
-                    res.status(200).send({
-                        message:"El marcador fue eliminado"
-                    });
-                }
-            });
-        }
+
         
 
     });
