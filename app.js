@@ -5,7 +5,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 
 var app = express();
-var api = require('./routes/favorito')
+var api = require('./routes/marcadorRoute')
 
 //app.listen(3399,function(){
 
